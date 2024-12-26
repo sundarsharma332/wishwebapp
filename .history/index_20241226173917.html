@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra Premium New Year Card Maker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+        :root {
+            --primary-color: #00b4db;
+            --secondary-color: #0083b0;
+            --dark-bg: #0a1929;
+            --light-text: #ffffff;
+            --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a365d 100%);
+            color: var(--light-text);
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #fff 0%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--card-shadow);
+        }
+
+        .control-section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label i {
+            color: var(--primary-color);
+        }
+
+        .controls input[type="text"] {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .controls input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 180, 219, 0.2);
+        }
+
+        .color-picker-container {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .controls input[type="color"] {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .preset-backgrounds {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preset-bg {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .preset-bg:hover {
+            transform: scale(1.05);
+        }
+
+        .preset-bg.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 180, 219, 0.2);
+        }
+
+        .custom-file-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-file-upload:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .custom-file-upload i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: #fff;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 180, 219, 0.4);
+        }
+
+        .download-btn i {
+            font-size: 1.2rem;
+        }
+
+        .card-preview-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+        }
+
+        .card-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card-preview:hover {
+            transform: scale(1.01);
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .preview-subtext {
+            font-size: 2rem;
+            color: #ffffff;
+            max-width: 80%;
+            line-height: 1.6;
+            font-weight: 300;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .container {
+                grid-template-columns: 350px 1fr;
+                gap: 2rem;
+            }
+
+            .preview-heading {
+                font-size: 4rem;
+            }
+
+            .preview-subtext {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .preview-heading {
+                font-size: 3rem;
+            }
+
+            .preview-subtext {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="page-title animate__animated animate__fadeInDown">Ultra Premium New Year Card Maker</h1>
+    <div class="container">
+        <div class="controls animate__animated animate__fadeInLeft">
+            <div class="control-section">
+                <h2 class="section-title"><i class="fas fa-pen"></i> Text Content</h2>
+                <div class="control-group">
+                    <label><i class="fas fa-heading"></i> Heading Text</label>
+                    <input type="text" id="heading" placeholder="Happy New Year 2025!">
+                </div>
+                <div class="control-group">
+                    <label><i class="fas fa-align-left"></i> Subtext</label>
+                    <textarea type="text" id="subtext" placeholder="Wishing you a joyful and prosperous year ahead!"
+                        style="width: 100%; min-height: 100px; resize: vertical; padding: 1rem 1.2rem; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; background: rgba(255, 255, 255, 0.05); color: #fff; font-family: 'Poppins', sans-serif;"></textarea>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h2 class="section-title"><i class="fas fa-palette"></i> Background Options</h2>
+                <div class="control-group">
+                    <label><i class="fas fa-fill-drip"></i> Card Background Color</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="bgColor" value="#1a1a1a">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label><i class="fas fa-images"></i> Preset Backgrounds</label>
+                    <div class="preset-backgrounds" id="presetBackgrounds">
+                        <!-- Preset backgrounds will be added via JavaScript -->
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label><i class="fas fa-upload"></i> Custom Background</label>
+                    <label class="custom-file-upload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload your image</span>
+                        <input type="file" id="bgImage" accept="image/*">
+                    </label>
+                </div>
+            </div>
+
+            <button id="downloadBtn" class="download-btn">
+                <i class="fas fa-download"></i>
+                Download Card
+            </button>
+        </div>
+
+        <div class="card-preview-container">
+            <div class="card-preview" id="card">
+                <img src="" alt="Background Image" class="bg-image" id="previewImage">
+                <div class="content">
+                    <h1 id="previewHeading" class="preview-heading">Happy New Year 2025!</h1>
+                    <p id="previewSubtext" class="preview-subtext">Wishing you a joyful and prosperous year ahead!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Generating your card...</div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Predefined backgrounds
+            const presetBackgrounds = [
+                { url: 'https://images.pexels.com/photos/1387577/pexels-photo-1387577.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', name: 'Fireworks', color: '#1a1a1a' },
+                { url: 'https://images.pexels.com/photos/769525/pexels-photo-769525.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', name: 'Sparkles', color: '#2a2a2a' },
+                { url: 'https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', name: 'Countdown', color: '#1f1f1f' },
+                { url: 'https://images.pexels.com/photos/3171770/pexels-photo-3171770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', name: 'Celebration', color: '#252525' },
+                { url: 'https://images.pexels.com/photos/10967/pexels-photo-10967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', name: 'Midnight', color: '#202020' },
+                { url: 'https://images.pexels.com/photos/799964/pexels-photo-799964.jpeg?auto=compress&cs=tinysrgb&w=600', name: 'Party', color: '#232323' }
+            ];
+
+            // DOM Elements
+            const headingInput = document.getElementById('heading');
+            const subtextInput = document.getElementById('subtext');
+            const bgColorInput = document.getElementById('bgColor');
+            const bgImageInput = document.getElementById('bgImage');
+            const previewHeading = document.getElementById('previewHeading');
+            const previewSubtext = document.getElementById('previewSubtext');
+            const previewCard = document.getElementById('card');
+            const previewImage = document.getElementById('previewImage');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const loading = document.querySelector('.loading');
+            const presetBackgroundsContainer = document.getElementById('presetBackgrounds');
+
+            // Initialize preset backgrounds
+            function initializePresetBackgrounds() {
+                presetBackgrounds.forEach((bg, index) => {
+                    const presetElement = document.createElement('div');
+                    presetElement.className = 'preset-bg';
+                    presetElement.style.backgroundColor = bg.color;
+                    presetElement.setAttribute('data-index', index);
+                    presetElement.title = bg.name;
+
+                    presetElement.addEventListener('click', () => {
+                        // Remove active class from all presets
+                        document.querySelectorAll('.preset-bg').forEach(el => {
+                            el.classList.remove('active');
+                        });
+
+                        // Add active class to selected preset
+                        presetElement.classList.add('active');
+
+                        // Update preview
+                        previewImage.src = bg.url;
+                        bgColorInput.value = bg.color;
+                        previewCard.style.backgroundColor = bg.color;
+
+                        // Add animation
+                        previewImage.classList.add('animate__animated', 'animate__fadeIn');
+                        setTimeout(() => {
+                            previewImage.classList.remove('animate__animated', 'animate__fadeIn');
+                        }, 1000);
+                    });
+
+                    presetBackgroundsContainer.appendChild(presetElement);
+                });
+            }
+
+            // Input handling with debounce
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Update preview text with animation
+            const updateHeading = debounce((value) => {
+                previewHeading.classList.add('animate__animated', 'animate__fadeIn');
+                previewHeading.textContent = value || 'Happy New Year 2025!';
+                setTimeout(() => {
+                    previewHeading.classList.remove('animate__animated', 'animate__fadeIn');
+                }, 1000);
+            }, 300);
+
+            const updateSubtext = debounce((value) => {
+                previewSubtext.classList.add('animate__animated', 'animate__fadeIn');
+                previewSubtext.textContent = value || 'Wishing you a joyful and prosperous year ahead!';
+                setTimeout(() => {
+                    previewSubtext.classList.remove('animate__animated', 'animate__fadeIn');
+                }, 1000);
+            }, 300);
+
+            // Event Listeners
+            headingInput.addEventListener('input', (e) => updateHeading(e.target.value));
+            subtextInput.addEventListener('input', (e) => updateSubtext(e.target.value));
+
+            bgColorInput.addEventListener('input', (e) => {
+                previewCard.style.backgroundColor = e.target.value;
+                // Remove active class from all presets when custom color is selected
+                document.querySelectorAll('.preset-bg').forEach(el => {
+                    el.classList.remove('active');
+                });
+            });
+
+            // File upload handling
+            bgImageInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        // Remove active class from all presets when custom image is uploaded
+                        document.querySelectorAll('.preset-bg').forEach(el => {
+                            el.classList.remove('active');
+                        });
+
+                        previewImage.src = e.target.result;
+                        previewImage.classList.add('animate__animated', 'animate__fadeIn');
+                        setTimeout(() => {
+                            previewImage.classList.remove('animate__animated', 'animate__fadeIn');
+                        }, 1000);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Download functionality
+            downloadBtn.addEventListener('click', async () => {
+                loading.classList.add('active');
+                try {
+                    const canvas = await html2canvas(previewCard, {
+                        scale: 2, // Higher quality
+                        logging: false,
+                        useCORS: true,
+                        width: 1920,
+                        height: 1080
+                    });
+
+                    // Create high-quality download
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.download = `new-year-card-${new Date().getTime()}.png`;
+                    link.click();
+                } catch (error) {
+                    console.error('Error generating image:', error);
+                    alert('There was an error generating your card. Please try again.');
+                } finally {
+                    loading.classList.remove('active');
+                }
+            });
+
+            // Initialize the app
+            function init() {
+                initializePresetBackgrounds();
+                // Set initial background
+                if (presetBackgrounds.length > 0) {
+                    previewImage.src = presetBackgrounds[0].url;
+                    previewCard.style.backgroundColor = presetBackgrounds[0].color;
+                    bgColorInput.value = presetBackgrounds[0].color;
+                    document.querySelector('.preset-bg').classList.add('active');
+                }
+            }
+
+            // Start the application
+            init();
+        });
+    </script>
+</body>
+
+</html>
